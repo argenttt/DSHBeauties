@@ -23,7 +23,7 @@ format:
     pdf-engine: pdflatex
 
 execute:
-  echo: false
+  echo: true
   warning: false
   message: false
 
@@ -165,6 +165,8 @@ plt.show()
 ## Answer, Response, + Summary of Results
 
 ```{python}
+#| echo: false
+
 intro_text = f"To determine whether extreme observations distort the analysis, we evaluated bivariate regression influence using Cook's Distance (threshold $4/N = {threshold:.4f}$) across $N = {n}$ complete observations."
 display(Markdown(intro_text))
 ```
@@ -220,6 +222,8 @@ plt.show()
 ## Summary of Results
 
 ```{python}
+#| echo: false
+
 discussion_text = f"""
 * **Key Finding**: As shown in @tbl-model-comparison, we identified **{n_outliers} influential observation(s)** ($4/N = {threshold:.4f}$). Removing them strengthened the negative slope from **{model_full.params['ca_score']:.3f}** ($p = {model_full.pvalues['ca_score']:.3f}$) to **{model_pruned.params['ca_score']:.3f}** ($p < 0.001$), with $R^2$ moving from **{model_full.rsquared:.3f}** to **{model_pruned.rsquared:.3f}**.
 * **Conclusion**: As illustrated in @fig-regression-comparison, removing high-influence outliers does not alter the core finding: communication apprehension has a **statistically significant negative relationship** with transit usage. Removing outliers reveals a stronger underlying negative effect.
@@ -231,8 +235,10 @@ display(Markdown(discussion_text))
 ## What questions or uncertainties remain?
 
 ```{python}
+#| echo: false
+
 uncertainties_text = """
-1. **Measurement Limitations**: Converting ordinal category choices into exact monthly days via midpoints creates discrete cluster bands. Would **Logistic Regression** (predicting binary regular usage) better accommodate these extreme boundary values?
+1. **Measurement Limitations**: Converting ordinal category choices into exact monthly days via midpoints creates discrete cluster bands and extreme boundary values. Would an Ordinal Logistic Regression (or a Binary Logistic model for regular usage) better accommodate these ordinal categories without relying on arbitrary midpoint assumptions?
 2. **Omitted Variable Bias**: The identified outliers may reflect unmeasured socio-demographic factors (e.g., vehicle ownership, transit access, income) rather than true anomalies in communication apprehension.
 """
 

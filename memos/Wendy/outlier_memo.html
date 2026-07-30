@@ -25,6 +25,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -129,6 +164,74 @@ window.Quarto = {
 </header>
 
 
+<div id="d5de90e8" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. SETUP ENVIRONMENT AND LOAD DATA</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Markdown</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.autolayout'</span>] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'figure.dpi'</span>] <span class="op">=</span> <span class="dv">120</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'../../cleaned_data/merged_data.csv'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. VARIABLE RECODING AND DATA CLEANING</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># ==============================================================================</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>likert_mapping <span class="op">=</span> {</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Strongly disagree"</span>: <span class="dv">1</span>, <span class="st">"Somewhat disagree"</span>: <span class="dv">2</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Neither agree nor disagree"</span>: <span class="dv">3</span>, <span class="st">"Somewhat agree"</span>: <span class="dv">4</span>, <span class="st">"Strongly agree"</span>: <span class="dv">5</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>ca_items <span class="op">=</span> [<span class="st">'Q1'</span>, <span class="st">'Q2'</span>, <span class="st">'Q3'</span>, <span class="st">'Q4'</span>, <span class="st">'Q5'</span>, <span class="st">'Q6'</span>, <span class="st">'Q13'</span>, <span class="st">'Q14'</span>, <span class="st">'Q15'</span>, <span class="st">'Q16'</span>, <span class="st">'Q17'</span>, <span class="st">'Q18'</span>]</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>reverse_items <span class="op">=</span> [<span class="st">'Q2'</span>, <span class="st">'Q4'</span>, <span class="st">'Q6'</span>, <span class="st">'Q14'</span>, <span class="st">'Q16'</span>, <span class="st">'Q17'</span>]</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> ca_items:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> item <span class="kw">in</span> df.columns:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        df[item] <span class="op">=</span> df[item].<span class="bu">map</span>(likert_mapping)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> item <span class="kw">in</span> reverse_items:</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> item <span class="kw">in</span> df.columns:</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        df[item] <span class="op">=</span> <span class="dv">6</span> <span class="op">-</span> df[item]</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'ca_score'</span>] <span class="op">=</span> df[ca_items].mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>transit_midpoint_map <span class="op">=</span> {</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Never'</span>: <span class="dv">0</span>, <span class="st">'0-1 days a month'</span>: <span class="fl">0.5</span>, <span class="st">'2-4 days a month'</span>: <span class="dv">3</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">'4-8 days a month'</span>: <span class="dv">6</span>, <span class="st">'8 or more days a month'</span>: <span class="dv">12</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'public_transit_days'</span>] <span class="op">=</span> df[<span class="st">'Q26'</span>].<span class="bu">map</span>(transit_midpoint_map)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>df_clean <span class="op">=</span> df[[<span class="st">'ca_score'</span>, <span class="st">'public_transit_days'</span>]].dropna().copy()</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># OLS Regression Fit &amp; Cook's Distance</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(df_clean[<span class="st">'ca_score'</span>])</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df_clean[<span class="st">'public_transit_days'</span>]</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>model_full <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>influence <span class="op">=</span> model_full.get_influence()</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>cooks_d <span class="op">=</span> influence.cooks_distance[<span class="dv">0</span>]</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(df_clean)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>threshold <span class="op">=</span> <span class="dv">4</span> <span class="op">/</span> n</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">'cooks_d'</span>] <span class="op">=</span> cooks_d</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>df_clean[<span class="st">'is_influential'</span>] <span class="op">=</span> cooks_d <span class="op">&gt;</span> threshold</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>n_outliers <span class="op">=</span> df_clean[<span class="st">'is_influential'</span>].<span class="bu">sum</span>()</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>df_pruned <span class="op">=</span> df_clean[<span class="op">~</span>df_clean[<span class="st">'is_influential'</span>]]</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>X_pruned <span class="op">=</span> sm.add_constant(df_pruned[<span class="st">'ca_score'</span>])</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>y_pruned <span class="op">=</span> df_pruned[<span class="st">'public_transit_days'</span>]</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>model_pruned <span class="op">=</span> sm.OLS(y_pruned, X_pruned).fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 <section id="research-or-analytical-question" class="level2">
 <h2 class="anchored" data-anchor-id="research-or-analytical-question">Research or Analytical Question</h2>
 <p>Are there any statistical outliers present in the data, and to what extent do these potential outliers exert leverage or influence on the fitted regression line between communication apprehension and public transit usage?</p>
@@ -144,6 +247,15 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h2>
 <p>To assess variable distributions and detect potential extreme values, we examine summary statistics (including interquartile ranges) and visual boxplots.</p>
 <div class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>summary_stats <span class="op">=</span> df_clean[[<span class="st">'ca_score'</span>, <span class="st">'public_transit_days'</span>]].describe().T</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>summary_stats[<span class="st">'IQR'</span>] <span class="op">=</span> summary_stats[<span class="st">'75%'</span>] <span class="op">-</span> summary_stats[<span class="st">'25%'</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>summary_stats[<span class="st">'Lower_Bound'</span>] <span class="op">=</span> summary_stats[<span class="st">'25%'</span>] <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> summary_stats[<span class="st">'IQR'</span>]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>summary_stats[<span class="st">'Upper_Bound'</span>] <span class="op">=</span> summary_stats[<span class="st">'75%'</span>] <span class="op">+</span> <span class="fl">1.5</span> <span class="op">*</span> summary_stats[<span class="st">'IQR'</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>display(summary_stats[[<span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'min'</span>, <span class="st">'50%'</span>, <span class="st">'max'</span>, <span class="st">'IQR'</span>, <span class="st">'Lower_Bound'</span>, <span class="st">'Upper_Bound'</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div id="tbl-summary-stats" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summary-stats-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -204,6 +316,21 @@ Table&nbsp;1: Descriptive statistics for primary variables
 <section id="variable-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="variable-distributions">Variable Distributions</h2>
 <div id="cell-fig-variable-boxplots" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">2.5</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sns.boxplot(y<span class="op">=</span>df_clean[<span class="st">'ca_score'</span>], ax<span class="op">=</span>axes[<span class="dv">0</span>], color<span class="op">=</span><span class="st">'skyblue'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Score (1–5 Scale)'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Communication Apprehension Score'</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>sns.boxplot(y<span class="op">=</span>df_clean[<span class="st">'public_transit_days'</span>], ax<span class="op">=</span>axes[<span class="dv">1</span>], color<span class="op">=</span><span class="st">'lightgreen'</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Days / Month'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Public Transit Usage Days'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display">
 <div id="fig-variable-boxplots" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -221,6 +348,19 @@ Figure&nbsp;1: Boxplots displaying distribution spread and extreme data points
 <section id="cooks-distance-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="cooks-distance-diagnostics">Cook’s Distance Diagnostics</h2>
 <div id="cell-fig-cooks-distance" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">2.5</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plt.stem(df_clean.index, df_clean[<span class="st">'cooks_d'</span>], markerfmt<span class="op">=</span><span class="st">'o'</span>, basefmt<span class="op">=</span><span class="st">' '</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span>threshold, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="ss">f'Threshold (4/N = </span><span class="sc">{</span>threshold<span class="sc">:.4f}</span><span class="ss">)'</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Observation Index'</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Cook's Distance"</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Cook's Distance Plot (Identifying Influential Data Points)"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display">
 <div id="fig-cooks-distance" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -237,12 +377,25 @@ Figure&nbsp;2: Cook’s distance by observation index with 4/N threshold line
 </section>
 <section id="answer-response-summary-of-results" class="level2">
 <h2 class="anchored" data-anchor-id="answer-response-summary-of-results">Answer, Response, + Summary of Results</h2>
-<div id="9a478829" class="cell" data-execution_count="5">
+<div id="869a4309" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display cell-output-markdown">
 <p>To determine whether extreme observations distort the analysis, we evaluated bivariate regression influence using Cook’s Distance (threshold <span class="math inline">\(4/N = 0.0159\)</span>) across <span class="math inline">\(N = 252\)</span> complete observations.</p>
 </div>
 </div>
 <div class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>comparison_data <span class="op">=</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: [<span class="ss">f'Full Model (N=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">)'</span>, <span class="ss">f'Pruned Model (N=</span><span class="sc">{</span><span class="bu">len</span>(df_pruned)<span class="sc">}</span><span class="ss">)'</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Intercept'</span>: [<span class="ss">f"</span><span class="sc">{</span>model_full<span class="sc">.</span>params[<span class="st">'const'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>model_pruned<span class="sc">.</span>params[<span class="st">'const'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Slope (CA Score)'</span>: [<span class="ss">f"</span><span class="sc">{</span>model_full<span class="sc">.</span>params[<span class="st">'ca_score'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>model_pruned<span class="sc">.</span>params[<span class="st">'ca_score'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'p-value'</span>: [<span class="ss">f"</span><span class="sc">{</span>model_full<span class="sc">.</span>pvalues[<span class="st">'ca_score'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>model_pruned<span class="sc">.</span>pvalues[<span class="st">'ca_score'</span>]<span class="sc">:.3f}</span><span class="ss">"</span>],</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'R-squared'</span>: [<span class="ss">f"</span><span class="sc">{</span>model_full<span class="sc">.</span>rsquared<span class="sc">:.3f}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>model_pruned<span class="sc">.</span>rsquared<span class="sc">:.3f}</span><span class="ss">"</span>]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>comparison_df <span class="op">=</span> pd.DataFrame(comparison_data)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>display(comparison_df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div id="tbl-model-comparison" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -291,6 +444,34 @@ Table&nbsp;2: Comparison of OLS regression models before and after outlier remov
 </div>
 </div>
 <div id="cell-fig-regression-comparison" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">5.5</span>, <span class="fl">2.2</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ax.scatter(df_clean[<span class="op">~</span>df_clean[<span class="st">'is_influential'</span>]][<span class="st">'ca_score'</span>], </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           df_clean[<span class="op">~</span>df_clean[<span class="st">'is_influential'</span>]][<span class="st">'public_transit_days'</span>], </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>           color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>, s<span class="op">=</span><span class="dv">20</span>, label<span class="op">=</span><span class="st">'Normal observations'</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ax.scatter(df_clean[df_clean[<span class="st">'is_influential'</span>]][<span class="st">'ca_score'</span>], </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>           df_clean[df_clean[<span class="st">'is_influential'</span>]][<span class="st">'public_transit_days'</span>], </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>           color<span class="op">=</span><span class="st">'red'</span>, s<span class="op">=</span><span class="dv">35</span>, edgecolors<span class="op">=</span><span class="st">'black'</span>, label<span class="op">=</span><span class="st">'Outliers (Cook</span><span class="ch">\'</span><span class="st">s D &gt; 4/N)'</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>x_vals <span class="op">=</span> np.linspace(df_clean[<span class="st">'ca_score'</span>].<span class="bu">min</span>(), df_clean[<span class="st">'ca_score'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>y_full <span class="op">=</span> model_full.params[<span class="st">'const'</span>] <span class="op">+</span> model_full.params[<span class="st">'ca_score'</span>] <span class="op">*</span> x_vals</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>y_pruned <span class="op">=</span> model_pruned.params[<span class="st">'const'</span>] <span class="op">+</span> model_pruned.params[<span class="st">'ca_score'</span>] <span class="op">*</span> x_vals</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax.plot(x_vals, y_full, <span class="st">'b-'</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">'Full Model Line'</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax.plot(x_vals, y_pruned, <span class="st">'g--'</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">'Pruned Model Line'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Communication Apprehension Score'</span>, fontsize<span class="op">=</span><span class="fl">7.5</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Public Transit Days (Monthly)'</span>, fontsize<span class="op">=</span><span class="fl">7.5</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Regression Sensitivity: Impact of High-Influence Outliers'</span>, fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">6</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display">
 <div id="fig-regression-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -307,7 +488,7 @@ Figure&nbsp;3: Scatter plot with regression lines before and after outlier remov
 </section>
 <section id="summary-of-results" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-results">Summary of Results</h2>
-<div id="b17f38cd" class="cell" data-execution_count="8">
+<div id="c3c9cfcc" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display cell-output-markdown">
 <ul>
 <li><strong>Key Finding</strong>: As shown in <a href="#tbl-model-comparison" class="quarto-xref">Table&nbsp;2</a>, we identified <strong>7 influential observation(s)</strong> (<span class="math inline">\(4/N = 0.0159\)</span>). Removing them strengthened the negative slope from <strong>-0.986</strong> (<span class="math inline">\(p = 0.001\)</span>) to <strong>-1.459</strong> (<span class="math inline">\(p &lt; 0.001\)</span>), with <span class="math inline">\(R^2\)</span> moving from <strong>0.043</strong> to <strong>0.094</strong>.</li>
@@ -318,10 +499,10 @@ Figure&nbsp;3: Scatter plot with regression lines before and after outlier remov
 </section>
 <section id="what-questions-or-uncertainties-remain" class="level2">
 <h2 class="anchored" data-anchor-id="what-questions-or-uncertainties-remain">What questions or uncertainties remain?</h2>
-<div id="102136e8" class="cell" data-execution_count="9">
+<div id="c9b4faec" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display cell-output-markdown">
 <ol type="1">
-<li><strong>Measurement Limitations</strong>: Converting ordinal category choices into exact monthly days via midpoints creates discrete cluster bands. Would <strong>Logistic Regression</strong> (predicting binary regular usage) better accommodate these extreme boundary values?</li>
+<li><strong>Measurement Limitations</strong>: Converting ordinal category choices into exact monthly days via midpoints creates discrete cluster bands and extreme boundary values. Would an Ordinal Logistic Regression (or a Binary Logistic model for regular usage) better accommodate these ordinal categories without relying on arbitrary midpoint assumptions?</li>
 <li><strong>Omitted Variable Bias</strong>: The identified outliers may reflect unmeasured socio-demographic factors (e.g., vehicle ownership, transit access, income) rather than true anomalies in communication apprehension.</li>
 </ol>
 </div>
