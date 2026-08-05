@@ -36,11 +36,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 # Load the data
-prolific = pd.read_csv('Summer2026DSHBData/PRCAProlificExport_FileA.csv')
-qualtrics = pd.read_csv('Summer2026DSHBData/PRCAQualtricsExport_FileC.csv')
-
-# Merge on participant ID
-df = qualtrics.merge(prolific, left_on='Q0', right_on='Participant id', how='left')
+df = pd.read_csv('merged_data.csv')
 ```
 
 ```{python}
@@ -82,7 +78,8 @@ analysis_data = df.dropna(
 ```
 
 ```{python}
-#| label: descriptive-statistics
+#| label: tbl-descriptive-statistics
+#| tbl-cap: "Summary table of public transit users and non-users"
 
 summary = (
     analysis_data
@@ -97,7 +94,7 @@ summary
 Public transit users had a mean communication apprehension score of **27.68** (`n = 191`), whereas non-users had a mean score of **33.72** (`n = 50`). Non-users therefore scored approximately **6.04 points higher**, on average, than transit users.
 
 ```{python}
-#| label: visualization
+#| label: fig-visualization
 #| fig-cap: "Communication apprehension scores among public transit users and non-users."
 
 plot_order = ["Non-user", "User"]
