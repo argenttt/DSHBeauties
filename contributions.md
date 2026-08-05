@@ -1,9 +1,9 @@
 # Contributions
 
-**Group:** DSHBeauties
-**Group Members:** [Wendy/Chloe/Lin/Weizhu/Sherry]
-**Project:** The Relationship Between Communication Apprehension and Public Transportation Usage
-**Repository:** [Link to Repo](https://github.com/liangyinglee/DSHBeauties.git)
+- **Group:** DSHBeauties
+- **Group Members:** [Wendy/Chloe/Lin/Weizhu/Sherry]
+- **Project:** The Relationship Between Communication Apprehension and Public Transportation Usage
+- **Repository:** [Link to Repo](https://github.com/liangyinglee/DSHBeauties.git)
 
 ---
 

@@ -84,12 +84,18 @@ How do communication apprehension scores differ between public transit users and
 <p>This memorandum uses <code>merged_data.csv</code> to compare communication apprehension scores between public transit users and non-users.</p>
 <p>Communication apprehension was measured using 12 Likert-scale items: <code>Q1</code>–<code>Q6</code> and <code>Q13</code>–<code>Q18</code>. Responses were coded from 1 for <strong>Strongly disagree</strong> to 5 for <strong>Strongly agree</strong>. Positively worded items (<code>Q2</code>, <code>Q4</code>, <code>Q6</code>, <code>Q14</code>, <code>Q16</code>, and <code>Q17</code>) were reverse-coded so that higher total scores consistently represented greater communication apprehension.</p>
 <p>Participants who selected <strong>Never</strong> for <code>Q26</code> were coded as non-users. Participants selecting any other public-transit-use category were coded as users.</p>
-<div id="cell-descriptive-statistics" class="cell" data-execution_count="3">
-<div id="descriptive-statistics" class="cell-output cell-output-display" data-execution_count="20">
+<div class="cell" data-execution_count="3">
+<div id="tbl-descriptive-statistics" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-descriptive-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Summary table of public transit users and non-users
+</figcaption>
+<div aria-describedby="tbl-descriptive-statistics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<table class="dataframe cell caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -109,17 +115,17 @@ How do communication apprehension scores differ between public transit users and
 <tbody>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">Non-user</th>
-<td>54</td>
-<td>33.37</td>
-<td>13.16</td>
-<td>33.0</td>
+<td>50</td>
+<td>33.72</td>
+<td>13.33</td>
+<td>33.5</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">User</th>
-<td>206</td>
-<td>28.58</td>
-<td>10.85</td>
-<td>26.0</td>
+<td>191</td>
+<td>27.68</td>
+<td>10.51</td>
+<td>25.0</td>
 </tr>
 </tbody>
 </table>
@@ -127,13 +133,20 @@ How do communication apprehension scores differ between public transit users and
 </div>
 </div>
 </div>
+</figure>
+</div>
+</div>
 <p>Public transit users had a mean communication apprehension score of <strong>27.68</strong> (<code>n = 191</code>), whereas non-users had a mean score of <strong>33.72</strong> (<code>n = 50</code>). Non-users therefore scored approximately <strong>6.04 points higher</strong>, on average, than transit users.</p>
-<div id="cell-visualization" class="cell" data-execution_count="4">
+<div id="cell-fig-visualization" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
-<div id="visualization" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="Memo_3_index_files/figure-html/visualization-output-1.png" width="601" height="440" class="figure-img"></p>
-<figcaption>Communication apprehension scores among public transit users and non-users.</figcaption>
+<div id="fig-visualization" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-visualization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="Memo_3_index_files/figure-html/fig-visualization-output-1.png" width="601" height="440" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-visualization-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Communication apprehension scores among public transit users and non-users.
+</figcaption>
 </figure>
 </div>
 </div>
@@ -141,9 +154,9 @@ How do communication apprehension scores differ between public transit users and
 <p>A visual comparison of the two groups indicates that communication apprehension scores tend to be higher among public transit non-users than among users.</p>
 <div id="welch-test" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
-<pre><code>t = -2.462
-df = 72.95
-p = 0.0162</code></pre>
+<pre><code>t = -2.971
+df = 65.79
+p = 0.0041</code></pre>
 </div>
 </div>
 <p>A Welch independent-samples t-test found a statistically significant difference between the groups, <em>t</em>(65.79) = −2.97, <em>p</em> = .004. Based on these data, public transit users reported lower communication apprehension scores than non-users.</p>
